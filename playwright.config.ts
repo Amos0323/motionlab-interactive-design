@@ -22,7 +22,16 @@ export default defineConfig({
         channel: process.env.PLAYWRIGHT_CHANNEL,
       },
     },
-    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
+    {
+      name: 'firefox',
+      use: {
+        ...devices['Desktop Firefox'],
+        // Hosted Linux has no physical GPU. Explicitly allow Mesa software WebGL.
+        launchOptions: process.env.CI
+          ? { firefoxUserPrefs: { 'webgl.force-enabled': true } }
+          : undefined,
+      },
+    },
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },
   ],
   webServer: {

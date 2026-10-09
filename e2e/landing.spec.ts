@@ -63,6 +63,13 @@ test('keyboard skip link, visible focus, native disclosure and pause control', a
   expect(
     await orbit.evaluate((e) => getComputedStyle(e).animationPlayState),
   ).toBe('paused')
+  // Wait for the browser compositor to commit the paused animation frame.
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+      ),
+  )
   const transform = await orbit.evaluate((e) => getComputedStyle(e).transform)
   await page.waitForTimeout(150)
   expect(await orbit.evaluate((e) => getComputedStyle(e).transform)).toBe(

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useLayoutEffect, useState } from 'react'
 import { animate, useMotionValue } from 'motion/react'
 import { useMotionPreferences } from './context'
 
@@ -9,7 +9,7 @@ export function usePlayback(duration: number) {
   const [playing, setPlaying] = useState(false)
   const [completed, setCompleted] = useState(true)
   const [revision, setRevision] = useState(0)
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (reduced) {
       progress.set(1)
       return

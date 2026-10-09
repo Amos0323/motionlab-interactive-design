@@ -99,6 +99,14 @@ test('SVG paths interpolate, pause globally, replay and reset', async ({
   await page.getByRole('button', { name: 'Star', exact: true }).click()
   await expect.poll(() => path.getAttribute('d')).not.toBe(initial)
   await page.getByRole('button', { name: 'Pause motion', exact: true }).click()
+  // Motion's queued DOM render must settle before comparing frozen frames.
+  await expect(page.getByRole('status')).toHaveText('Paused by global control')
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) =>
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+      ),
+  )
   const paused = await path.getAttribute('d')
   await page.waitForTimeout(200)
   expect(await path.getAttribute('d')).toBe(paused)
