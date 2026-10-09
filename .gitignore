@@ -1,0 +1,26 @@
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+*.local
+.DS_Store
+
+# Local deployment state, diagnostics and credentials
+.vercel/
+playwright/.cache/
+blob-report/
+*.log
+*.pem
+*.key
+*.p12
+*.pfx
+Thumbs.db
+.idea/
+.vscode/
+.tmp/
+tmp/
