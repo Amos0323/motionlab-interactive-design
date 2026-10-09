@@ -233,7 +233,9 @@ test('offscreen rendering pauses and GPU buffers are released on unmount', async
   const cachedShadows = (await metrics()).shadowDraws
   await page.waitForTimeout(200)
   expect((await metrics()).shadowDraws).toBe(cachedShadows)
-  await page.evaluate(() => scrollTo(0, 0))
+  // The page uses smooth scrolling; finish the move before measuring offscreen work.
+  await page.evaluate(() => scrollTo({ top: 0, left: 0, behavior: 'instant' }))
+  await expect(page.locator('canvas')).not.toBeInViewport()
   await page.waitForTimeout(250)
   const stopped = (await metrics()).draws
   await page.waitForTimeout(250)
